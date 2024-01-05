@@ -92,7 +92,7 @@ var hasSpecial = false;
 var hasNumeric = false;
 var hasLower = false;
 var hasUpperCase = false;
-var characterTypeSelected = false;
+
 // Function to prompt user for password options
 function getPasswordOptions() {
   lengthOfPassword = prompt("How many characters you want for your password?");
@@ -103,33 +103,22 @@ function getPasswordOptions() {
     );
     return;
   }
-  hasSpecial = confirm("Do you want Special Characters in your password?");
-  hasNumeric = confirm("Do you want Numbers in your password?");
+
   hasLower = confirm("Do you want lower case characters in your password?");
   hasUpperCase = confirm("Do you want upper case characters in your password?");
-
-  if (
-    hasSpecial === true ||
-    hasNumeric === true ||
-    hasLower === true ||
-    hasUpperCase === true
-  ) {
-    characterTypeSelected = true;
-  } else {
-    alert(
-      "You didn't select any option from character types! Please choose at least one!"
-    );
-    return;
-  }
+  hasNumeric = confirm("Do you want Numbers in your password?");
+  hasSpecial = confirm("Do you want Special Characters in your password?");
 }
 
 // Function for getting a random element from an array
-function getRandom(arr) {}
+function getRandom(arr) {
+  var randomIndex = Math.floor(Math.random() * arr.length - 1);
+  return randomIndex;
+}
 
 // Function to generate password with user input
 function generatePassword() {
   getPasswordOptions();
-
   var charactersForPassword = [];
 
   if (hasLower) {
@@ -144,16 +133,15 @@ function generatePassword() {
   if (hasNumeric) {
     charactersForPassword = charactersForPassword.concat(numericCharacters);
   }
+  if (charactersForPassword.length == 0) {
+    return `Password can't be generated! Please select at least one character type when generating password`;
+  }
+
 
   var generatedPassword = "";
-
-  console.log(charactersForPassword);
-
   for (var i = 0; i < lengthOfPassword; i++) {
-    var randomIndex = Math.floor(
-      Math.random() * charactersForPassword.length - 1
-    );
-    generatedPassword += charactersForPassword[randomIndex];
+    generatedPassword +=
+      charactersForPassword[getRandom(charactersForPassword)];
   }
 
   return generatedPassword;
